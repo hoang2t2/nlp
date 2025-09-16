@@ -23,9 +23,7 @@ for s in sentences:
 
 
 
-dataset_path = "F:\\nlp\\data\\UD_English-EWT\\UD_English-EWT\\en_ewt-ud-train.txt"
-print("load_raw_text_data ->", load_raw_text_data)
-print("type ->", type(load_raw_text_data))
+dataset_path = "F:\\nlp\\nlp\\data\\UD_English-EWT\\UD_English-EWT\\en_ewt-ud-train.txt"
 raw_text = load_raw_text_data(dataset_path)
 sample_text = raw_text[:500]
 

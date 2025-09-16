@@ -1,0 +1,25 @@
+Lab1:
+Cài đặt interface Tokenizer (src/core/interfaces.py).
+Triển khai SimpleTokenizer (src/preprocessing/simple_tokenizer.py) hoạt động theo yêu cầu: lowercase, split, tách dấu câu . , ? !.
+Triển khai RegexTokenizer (src/preprocessing/regex_tokenizer.py) dùng regex để token hóa.
+Viết loader load_raw_text_data (src/core/dataset_loaders/load_raw_text_data.py) để đọc file UD_English-EWT.
+Tạo main.py để test cả hai tokenizer trên ba câu mẫu và một đoạn sample từ dataset; quan sát khác biệt đầu ra.
+
+Kết quả:
+--- SimpleTokenizer ---
+['hello', ',', 'world', '!', 'this', 'is', 'a', 'test', '.']
+['nlp', 'is', 'fascinating', '.', '.', '.', "isn't", 'it', '?']
+["let's", 'see', 'how', 'it', 'handles', '123', 'numbers', 'and', 'punctuation', '!']      
+
+--- RegexTokenizer ---
+['hello', ',', 'world', '!', 'this', 'is', 'a', 'test', '.']
+['nlp', 'is', 'fascinating', '.', '.', '.', 'isn', "'", 't', 'it', '?']
+['let', "'", 's', 'see', 'how', 'it', 'handles', '123', 'numbers', 'and', 'punctuation', '!']
+
+--- Tokenizing Sample Text from UD_English-EWT ---
+Original Sample: Al-Zaman : American forces killed Shaikh Abdullah al-Ani, the preacher at the
+mosque in the town of ...
+SimpleTokenizer Output: ['al-zaman', ':', 'american', 'forces', 'killed', 'shaikh', 'abdullah', 'al-ani', ',', 'the', 'preacher', 'at', 'the', 'mosque', 'in', 'the', 'town', 'of', 'qaim', ',']
+RegexTokenizer Output: ['al', '-', 'zaman', ':', 'american', 'forces', 'killed', 'shaikh', 'abdullah', 'al', '-', 'ani', ',', 'the', 'preacher', 'at', 'the', 'mosque', 'in', 'the']  
+
+Lab2:
