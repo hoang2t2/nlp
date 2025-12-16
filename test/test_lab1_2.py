@@ -31,7 +31,7 @@ def run_tests():
     # --- Task 3: UD_English-EWT Dataset  ---
     print("\n=== TEST 3: DATASET UD_ENGLISH-EWT ===")
     
-    dataset_path = "C:/Users/Hoang/nlp/data/UD_English-EWT/UD_English-EWT/en_ewt-ud-train.txt"
+    dataset_path = "C:/Users/Hoang/nlp/data/UD_English-EWT/en_ewt-ud-train.txt"
     
     try:
         raw_text = load_raw_text_data(dataset_path)
