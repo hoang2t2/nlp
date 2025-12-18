@@ -52,7 +52,9 @@ mosque in the town of ...
 
 SimpleTokenizer Output (first 20 tokens): ['al-zaman', ':', 'american', 'forces', 'killed', 'shaikh', 'abdullah', 'al-ani', ',', 'the', 'preacher', 'at', 'the', 'mosque', 'in', 'the', 'town', 'of', 'qaim', ',']
 RegexTokenizer Output (first 20 tokens): ['al', '-', 'zaman', ':', 'american', 'forces', 'killed', 'shaikh', 'abdullah', 'al', '-', 'ani', ',', 'the', 'preacher', 'at', 'the', 'mosque', 'in', 'the']
-C. Kết quả Lab 2: Count Vectorization (Ví dụ cơ bản)
+```
+
+### C. Kết quả Lab 2: Count Vectorization (Ví dụ cơ bản)
 Sử dụng corpus mẫu: ["I love NLP.", "I love programming.", "NLP is a subfield of AI."]
 Vocabulary Learned (vocabulary_):
 {
@@ -66,7 +68,9 @@ Document-Term Matrix (Ma trận tần số từ):
   [3], # "I love programming."
   [3]  # "NLP is a subfield of AI."
 ]
-III. Kết quả thu được 
+
+
+## III. Kết quả thu được 
 A. So sánh SimpleTokenizer và RegexTokenizer
 1. Chuyển đổi chữ thường: SimpleTokenizer chuyển tất cả token về chữ thường ('hello', 'nlp') theo yêu cầu. Ngược lại, RegexTokenizer trong triển khai này giữ nguyên chữ hoa ở đầu câu ('Hello', 'NLP'), cho thấy nó tập trung vào việc tách dựa trên mẫu regex mà không thực hiện tiền xử lý chữ thường.
 2. Xử lý Từ ghép/Dấu gạch nối:
@@ -84,3 +88,4 @@ Khó khăn 1: Xử lý Dấu nháy đơn trong RegexTokenizer:
 Khó khăn 2: Đảm bảo tính liên kết OOP giữa các Lab:
 • Vấn đề: Đảm bảo CountVectorizer sử dụng Tokenizer thông qua dependency injection (truyền instance vào constructor) và gọi đúng phương thức tokenize().
 • Giải quyết: Áp dụng cấu trúc OOP chặt chẽ, nơi CountVectorizer chỉ tương tác với interface Tokenizer, giúp code dễ dàng thay đổi bộ tokenizer (ví dụ: chuyển từ Simple sang Regex) mà không cần sửa đổi logic vectorization.
+
