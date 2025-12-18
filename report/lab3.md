@@ -1,4 +1,3 @@
-```markdown
 # Báo Cáo Lab 3: Trực Quan Hóa Word Embedding
 
 ## I. Mục tiêu
@@ -63,4 +62,3 @@ Biểu đồ t-SNE cho thấy hiệu quả trực quan hóa vượt trội .
 ### C. Nhận xét 
 
 T-SNE chứng minh khả năng bảo toàn mối quan hệ ngữ nghĩa cục bộ của vector GloVe tốt hơn PCA . Trong không gian t-SNE, các từ có ngữ nghĩa tương đồng (như các thành viên trong gia đình, các màu sắc) được đặt rất gần nhau, làm nổi bật tính chất của Word Embedding là biểu diễn ngữ nghĩa của từ trong không gian vector: **các từ liên quan nằm gần nhau** . Bài lab đã hoàn thành mục tiêu chứng minh rằng Word Embedding có khả năng nắm bắt quan hệ ngữ nghĩa, và t-SNE là công cụ hiệu quả để trực quan hóa cấu trúc ngữ nghĩa này.
-```
