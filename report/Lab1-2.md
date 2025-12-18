@@ -83,9 +83,9 @@ Document-Term Matrix (Ma trận tần số từ):
     ◦ Ví dụ, tài liệu thứ ba ("NLP is a subfield of AI.") có tần suất đếm là 1 cho các từ 'nlp' (index 2), 'is' (index 5), 'a' (index 6),... và 0 cho các từ không xuất hiện như 'love' (index 1) hoặc 'programming' (index 4). Thứ tự từ hoàn toàn bị bỏ qua, chỉ có sự xuất hiện của chúng là quan trọng.
 ## IV. Khó khăn gặp phải và cách giải quyết 
 Khó khăn 1: Xử lý Dấu nháy đơn trong RegexTokenizer:
-    • Vấn đề: Biểu thức chính quy cơ bản (\w+|[^\w\s]) có xu hướng tách các từ viết tắt có dấu nháy đơn (ví dụ: "isn't" và "Let's") thành ba token ('isn', "', 't'). Điều này đôi khi làm mất đi ngữ nghĩa của token gốc.
-    • Giải quyết: Đã chấp nhận kết quả tách chi tiết này để tuân thủ tính nhất quán của regex đã chọn, nhưng lưu ý rằng cần sử dụng một biểu thức chính quy phức tạp hơn (như \w+[']\w+|\w+|[^\w\s]) để giữ nguyên các từ viết tắt, nếu mục tiêu là giữ các token ngữ nghĩa hơn.
+    **Vấn đề**: Biểu thức chính quy cơ bản (\w+|[^\w\s]) có xu hướng tách các từ viết tắt có dấu nháy đơn (ví dụ: "isn't" và "Let's") thành ba token ('isn', "', 't'). Điều này đôi khi làm mất đi ngữ nghĩa của token gốc.
+    **Giải quyết**: Đã chấp nhận kết quả tách chi tiết này để tuân thủ tính nhất quán của regex đã chọn, nhưng lưu ý rằng cần sử dụng một biểu thức chính quy phức tạp hơn (như \w+[']\w+|\w+|[^\w\s]) để giữ nguyên các từ viết tắt, nếu mục tiêu là giữ các token ngữ nghĩa hơn.
 Khó khăn 2: Đảm bảo tính liên kết OOP giữa các Lab:
-    • Vấn đề: Đảm bảo CountVectorizer sử dụng Tokenizer thông qua dependency injection (truyền instance vào constructor) và gọi đúng phương thức tokenize().
-    • Giải quyết: Áp dụng cấu trúc OOP chặt chẽ, nơi CountVectorizer chỉ tương tác với interface Tokenizer, giúp code dễ dàng thay đổi bộ tokenizer (ví dụ: chuyển từ Simple sang Regex) mà không cần sửa đổi logic vectorization.
+     **Vấn đề**: Đảm bảo CountVectorizer sử dụng Tokenizer thông qua dependency injection (truyền instance vào constructor) và gọi đúng phương thức tokenize().
+    **Giải quyết**: Áp dụng cấu trúc OOP chặt chẽ, nơi CountVectorizer chỉ tương tác với interface Tokenizer, giúp code dễ dàng thay đổi bộ tokenizer (ví dụ: chuyển từ Simple sang Regex) mà không cần sửa đổi logic vectorization.
 
