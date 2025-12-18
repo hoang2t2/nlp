@@ -1,118 +1,73 @@
-# Báo cáo Lab 7: Phân tích Cú pháp Phụ thuộc (Dependency Parsing) với spaCy
+# Báo cáo Lab 7: Phân tích Cú pháp Phụ thuộc với spaCy
 
-Lab này tập trung vào kỹ thuật Dependency Parsing, sử dụng thư viện `spaCy` để xác định cấu trúc ngữ pháp của câu thông qua quan hệ head – dependent.
+Báo cáo này trình bày các bước thực hiện và kết quả của bài thực hành chi tiết về **Dependency Parsing (Phân tích cú pháp phụ thuộc) với spaCy** .
 
 ## I. Giới thiệu và Cài đặt
 
-### A. Cài đặt và Tải mô hình
+Bài lab này tập trung vào kỹ thuật **Phân tích cú pháp phụ thuộc (Dependency Parsing)**, nhằm xác định cấu trúc ngữ pháp của câu bằng cách mô hình hóa quan hệ giữa các từ theo cặp **head – dependent**.
 
-```python
-# 1. Cài đặt thư viện
-# pip install -U spacy
-# spacy download en_core_web_md
+*   **Môi trường:** Đã sử dụng thư viện **spaCy** .
+*   **Mô hình:** Đã tải và khởi tạo mô hình tiếng Anh kích thước trung bình: **`en_core_web_md`**. Mô hình này chứa đầy đủ thông tin cần thiết cho dependency parsing và word vectors .
 
-# 2. Tải mô hình và khởi tạo
-import spacy
-from spacy import displacy
+## II. Kết quả Phân tích và Trích xuất Cấu trúc
 
-nlp = spacy.load("en_core_web_md")
-II. Phân tích và Trực quan hóa Cây Phụ thuộc
-A. Phân tích Cấu trúc Token
-Câu ví dụ: "The quick brown fox jumps over the lazy dog."
-text = "The quick brown fox jumps over the lazy dog."
-doc = nlp(text)
+### 1. Phân tích Cây Phụ thuộc (Dependency Tree)
 
-# Phân tích token: dep_, head, children 
-print(f"Token: {doc[2].text}, DEP: {doc[2].dep_}, HEAD: {doc[2].head.text}, HEAD POS: {doc[2].head.pos_}")
-# Kết quả: Token: jumps, DEP: ROOT, HEAD: jumps, HEAD POS: VERB
-Kết quả Phân tích:
-• Từ gốc (ROOT): jumps (động từ chính của câu).
-• Quan hệ phụ thuộc chính:
-    ◦ fox: Chủ ngữ (nsubj) của jumps.
-    ◦ over: Giới từ bổ nghĩa (prep) cho jumps.
-B. Phân tích Chi tiết Từng Token
-Câu ví dụ: "Apple is looking at buying U.K. startup for $1 billions".
-| Token | DEP | HEAD | HEAD POS | CHILDREN |
-| :---: | :---: | :---: | :---: | :---: |
-| Apple | nsubj | looking | VERB | [ ] |
-| is | aux | looking | VERB | [ ] |
-| looking | ROOT | looking | VERB | [Apple, is, at] |
-| at | prep | looking | VERB | [buying] |
-| buying | pcomp | at | ADP | [startup] |
-| U.K. | compound | startup | NOUN | [ ] |
-| startup | dobj | buying | VERB | [U.K., for] |
-| for | prep | startup | NOUN | [billions] |
-| $ | quantmod | billions | NOUN | [ ] |
-| 1 | compound | billions | NOUN | [ ] |
-| billions | pobj | for | ADP | [$, 1] |
-III. Duyệt Cây Phụ thuộc để Trích xuất Thông tin
-1. Tìm Chủ ngữ – Động từ – Tân ngữ (S-V-O)
-Hàm này tìm các token là nsubj (chủ ngữ) và dobj (tân ngữ trực tiếp) của một động từ (VERB).
-def extract_subject_verb_object(doc):
-    for token in doc:
-        # 1. Tìm động từ
-        if token.pos_ == 'VERB':
-            verb = token.text
-            subject = ''
-            obj = ''
+*   **Câu ví dụ:** "The quick brown fox jumps over the lazy dog." .
+*   **Từ gốc (ROOT):** Động từ chính của câu là **`jumps`** .
+*   **Quan hệ phụ thuộc chính:**
+    *   Token **`fox`**: Có quan hệ Chủ ngữ (`nsubj`) với `jumps` .
+    *   Token **`over`**: Có quan hệ Giới từ bổ nghĩa (`prep`) với `jumps` .
 
-            # 2. Duyệt các token con (children)
-            for child in token.children:
-                # Tìm Chủ ngữ (nsubj)
-                if child.dep_ == 'nsubj':
-                    subject = child.text
-                # Tìm Tân ngữ trực tiếp (dobj)
-                if child.dep_ == 'dobj':
-                    obj = child.text
-            
-            # 3. In kết quả nếu tìm thấy cả hai
-            if subject and obj:
-                print(f'Found Triplet: ({subject}, {verb}, {obj})')
+### 2. Trích xuất Dependency của từng Token
 
-# Kết quả :
-# Câu test: "The cat chased the mouse and the dog watched them."
-# Found Triplet: (cat, chased, mouse)
-# Found Triplet: (dog, watched, them)
-2. Tìm Tính từ Bổ nghĩa cho Danh từ
-Hàm này tìm các token con có quan hệ amod (adjectival modifier) với token cha là danh từ (NOUN).
-def find_adjective_modifiers(doc):
-    for token in doc:
-        # 1. Tìm token là Danh từ (NOUN)
-        if token.pos_ == 'NOUN':
-            adjectives = []
-            
-            # 2. Duyệt các token con
-            for child in token.children:
-                # Tìm quan hệ bổ nghĩa tính từ
-                if child.dep_ == 'amod': # adjectival modifier
-                    adjectives.append(child.text)
-            
-            # 3. In kết quả
-            if adjectives:
-                # Kết quả có thể là danh sách [big, fluffy, white] 
-                print(f"Danh từ: '{token.text}' được bổ nghĩa bởi: {adjectives}")
+Phân tích câu: "Apple is looking at buying U.K. startup for $1 billion" .
 
-# Kết quả :
-# Câu test: "The big, fluffy white cat is sleeping on the warm mat."
-# Danh từ: 'cat' được bổ nghĩa bởi: ['big', 'fluffy', 'white']
-# Danh từ: 'mat' được bổ nghĩa bởi: ['warm']
-3. Tìm Đường đi từ Token đến ROOT 
-Hàm này tìm đường đi từ một token cụ thể đến token gốc của câu (dep_ == 'ROOT').
-• Hướng tiếp cận: Lần theo quan hệ head (parent) cho đến khi gặp token có dep_ == 'ROOT'.
-def get_path_to_root(token):
-    path = [token.text]
-    current = token
-    # Lặp cho đến khi gặp token gốc
-    while current.dep_ != 'ROOT':
-        current = current.head
-        path.append(current.text)
-        # Ngăn ngừa loop vô hạn trong trường hợp lỗi parsing
-        if len(path) > len(token.doc):
-            return "Path not found (potential cycle)"
-    return path
+| Token | Dependency (`dep_`) | Head | Head POS |
+| :---: | :---: | :---: | :---: |
+| **looking** | ROOT | looking | VERB |
+| **buying** | pcomp | at | ADP |
+| **startup** | dobj | buying | VERB |
+| **billions** | pobj | for | ADP |
 
-# Kết quả thực nghiệm:
-# Câu test: "The big, fluffy white cat is sleeping on the warm mat."
-# Start token: white
-# Đường đi tìm được: ['white', 'cat', 'sleeping']
-# Giải thích: white (dependent) → cat (head) → sleeping (ROOT)
+Kết quả cho thấy **ROOT** của câu là **`looking`** .
+
+### 3. Trích xuất Quan hệ Chủ ngữ – Động từ – Tân ngữ (S-V-O)
+
+Đã triển khai logic để tìm các token là `nsubj` (Chủ ngữ) và `dobj` (Tân ngữ trực tiếp) của một động từ (`VERB`) [4].
+
+*   **Câu test:** "The cat chased the mouse and the dog watched them." .
+*   **Kết quả:**
+    *   **cat chased mouse** .
+    *   **dog watched them** .
+
+### 4. Trích xuất Tính từ Bổ nghĩa Danh từ
+
+Đã triển khai logic tìm các token con có quan hệ **`amod`** (adjectival modifier) với token cha là danh từ (`NOUN`) .
+
+*   **Câu test:** "The big, fluffy white cat is sleeping on the warm mat." .
+*   **Kết quả:**
+    *   Danh từ: **`cat`** được bổ nghĩa bởi: **`['big', 'white']`**  hoặc **`['big', 'fluffy', 'white']`** .
+    *   Danh từ: **`mat`** được bổ nghĩa bởi: **`['warm']`** .
+
+### 5. Tìm Đường đi từ Token đến ROOT
+
+Đã triển khai hàm `get_path_to_root(token)` để tìm đường đi từ một token bất kỳ đến token gốc của câu .
+
+*   **Câu test 1:** "Apple is looking at buying U.K. startup for $1 billion".
+    *   **Start token:** `startup` (index 6).
+    *   **Đường đi tìm được:** **`['startup', 'buying', 'at', 'looking']`**.
+*   **Câu test 2:** "The big, fluffy white cat is sleeping on the warm mat.".
+    *   **Start token:** `white` (index 3).
+    *   **Đường đi tìm được:** **`['white', 'cat', 'sleeping']`**.
+
+## III. Kết luận
+
+Qua buổi thực hành, các sinh viên đã đạt được các mục tiêu sau:
+
+*   Hiểu về cây phụ thuộc (`dependency tree`) và ý nghĩa quan hệ `head–dependent`.
+*   Xác định được **ROOT** (Động từ chính) của câu .
+*   Thực hiện thành công việc trích xuất quan hệ S-V-O và tìm bổ nghĩa của danh từ thông qua amod .
+*   Thực hiện việc truy vết (lần theo quan hệ) đến ROOT để phân tích cấu trúc câu.
+
+Các ứng dụng thực tế của kỹ thuật này bao gồm: Trích xuất quan hệ (Relation Extraction), hệ thống hỏi đáp, phân tích ngữ nghĩa, và khai thác dữ liệu pháp luật.

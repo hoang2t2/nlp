@@ -39,17 +39,17 @@ Model GloVe pre-trained cho kết quả độ tương đồng và từ đồng n
 *   **Xử lý OOV:** Khó khăn khi tính document embedding (Task 3) nếu từ không có trong từ điển GloVe. **Giải pháp:** Triển khai logic kiểm tra sự tồn tại của từ. Các từ OOV bị bỏ qua khi tính trung bình, và nếu toàn bộ tài liệu là OOV, trả về vector không.
 *   **Cấu hình Spark (Task 4):** Việc thiết lập PySpark yêu cầu cấu hình môi trường phức tạp. **Giải pháp:** Sử dụng Spark MLlib, tận dụng các hàm phân tán để xử lý dữ liệu lớn, đảm bảo khả năng mở rộng (scalability) .
 ### E. Tham khảo 
-3. Gensim Documentation. 
+1. Gensim Documentation. 
   *Using Pretrained Word Embeddings and KeyedVectors.* 
   - Tutorial: [https://radimrehurek.com/gensim/auto_examples/tutorials/run_word2vec.html](https://radimrehurek.com/gensim/auto_examples/tutorials/run_word2vec.html) 
   - API Reference: [https://radimrehurek.com/gensim/models/keyedvectors.html](https://radimrehurek.com/gensim/models/keyedvectors.html)
 
 
-4. PySpark MLlib Documentation. 
+2. PySpark MLlib Documentation. 
   *Word2Vec API for feature learning of word embeddings.* 
   - Link: [https://spark.apache.org/docs/latest/ml-features.html#word2vec](https://spark.apache.org/docs/latest/ml-features.html#word2vec)
 
 
-5. scikit-learn Documentation. 
+3. scikit-learn Documentation. 
   *Dimensionality reduction techniques: PCA* 
   - PCA: [https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) 
