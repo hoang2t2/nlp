@@ -82,3 +82,4 @@ Mô hình tốt nhất trong các thử nghiệm cải tiến là **Scratch Embe
 **Khó khăn 3: Đánh giá Mô hình (Task 1):**
 *   *Vấn đề:* Cần tính toán đồng thời nhiều chỉ số đánh giá (Accuracy, Precision, Recall, F1) .
 *   *Giải pháp:* Sử dụng hàm `evaluate` của `TextClassifier` để tính toán và trả về các chỉ số này dưới dạng dictionary, tận dụng các hàm metrics của `sklearn`.
+
