@@ -71,17 +71,17 @@ Document-Term Matrix (Ma trận tần số từ):
 
 
 ## III. Kết quả thu được 
-A. So sánh SimpleTokenizer và RegexTokenizer
+### A. So sánh SimpleTokenizer và RegexTokenizer
 1. Chuyển đổi chữ thường: SimpleTokenizer chuyển tất cả token về chữ thường ('hello', 'nlp') theo yêu cầu. Ngược lại, RegexTokenizer trong triển khai này giữ nguyên chữ hoa ở đầu câu ('Hello', 'NLP'), cho thấy nó tập trung vào việc tách dựa trên mẫu regex mà không thực hiện tiền xử lý chữ thường.
 2. Xử lý Từ ghép/Dấu gạch nối:
     ◦ Trên dataset UD_English-EWT, SimpleTokenizer giữ 'al-zaman' và 'al-ani' là các token duy nhất.
     ◦ RegexTokenizer tách các từ này thành ba token riêng biệt: ['al', '-', 'zaman'] và ['al', '-', 'ani']. Điều này là kết quả của việc biểu thức chính quy coi dấu gạch nối (-) là một ký tự không phải từ ([^\w\s]), cho thấy tính chi tiết cao hơn của RegexTokenizer trong việc phân tách các thành phần cấu tạo từ.
-B. Phân tích CountVectorizer (Mô hình Bag-of-Words)
+### B. Phân tích CountVectorizer (Mô hình Bag-of-Words)
 1. Vocabulary: Phương thức fit đã thành công trong việc xây dựng từ điển (vocabulary_) bằng cách ánh xạ các token duy nhất (nhận được từ tokenizer) sang chỉ mục số nguyên (ví dụ: 'i' → 0, 'love' → 1).
 2. Document-Term Matrix (Ma trận tần số từ):
     ◦ Ma trận thể hiện mô hình Bag-of-Words, nơi mỗi hàng là một tài liệu được biểu diễn dưới dạng vector đếm. Các giá trị trong vector là tần suất xuất hiện của các từ trong từ điển.
     ◦ Ví dụ, tài liệu thứ ba ("NLP is a subfield of AI.") có tần suất đếm là 1 cho các từ 'nlp' (index 2), 'is' (index 5), 'a' (index 6),... và 0 cho các từ không xuất hiện như 'love' (index 1) hoặc 'programming' (index 4). Thứ tự từ hoàn toàn bị bỏ qua, chỉ có sự xuất hiện của chúng là quan trọng.
-IV. Khó khăn gặp phải và cách giải quyết 
+## IV. Khó khăn gặp phải và cách giải quyết 
 Khó khăn 1: Xử lý Dấu nháy đơn trong RegexTokenizer:
 • Vấn đề: Biểu thức chính quy cơ bản (\w+|[^\w\s]) có xu hướng tách các từ viết tắt có dấu nháy đơn (ví dụ: "isn't" và "Let's") thành ba token ('isn', "', 't'). Điều này đôi khi làm mất đi ngữ nghĩa của token gốc.
 • Giải quyết: Đã chấp nhận kết quả tách chi tiết này để tuân thủ tính nhất quán của regex đã chọn, nhưng lưu ý rằng cần sử dụng một biểu thức chính quy phức tạp hơn (như \w+[']\w+|\w+|[^\w\s]) để giữ nguyên các từ viết tắt, nếu mục tiêu là giữ các token ngữ nghĩa hơn.
